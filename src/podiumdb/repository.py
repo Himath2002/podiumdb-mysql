@@ -106,4 +106,3 @@ class PodiumRepository:
             return list(cursor.fetchall())
         finally:
             cursor.close()
-

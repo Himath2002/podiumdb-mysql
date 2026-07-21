@@ -27,4 +27,3 @@ def open_connection(
         raise
     finally:
         connection.close()
-

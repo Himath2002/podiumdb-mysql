@@ -7,4 +7,3 @@ SOURCE sql/schema/001_core_schema.sql;
 SOURCE sql/routines/001_routines_and_triggers.sql;
 SOURCE sql/seed/001_synthetic_competition.sql;
 SOURCE sql/analytics/001_views.sql;
-

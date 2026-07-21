@@ -110,4 +110,3 @@ def _display_value(value: Any) -> str:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

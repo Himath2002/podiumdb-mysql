@@ -141,4 +141,3 @@ LEFT JOIN athletes AS a
     ON a.country_code = c.country_code
 GROUP BY c.country_code, c.country_name
 ORDER BY athlete_count DESC, c.country_code;
-

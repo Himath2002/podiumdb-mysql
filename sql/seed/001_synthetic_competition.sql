@@ -144,4 +144,3 @@ INSERT INTO medal_awards (
     (508, 303, 'SILVER', NULL, 204, 'FRA', '2026-07-19'),
     (509, 304, 'GOLD', NULL, 201, 'USA', '2026-07-20'),
     (510, 304, 'SILVER', NULL, 202, 'JPN', '2026-07-20');
-

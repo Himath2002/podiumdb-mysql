@@ -57,4 +57,3 @@ class DatabaseConfig:
             "database": self.database,
             "autocommit": False,
         }
-

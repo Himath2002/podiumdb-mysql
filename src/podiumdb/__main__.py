@@ -4,4 +4,3 @@ from podiumdb.cli import main
 
 
 raise SystemExit(main())
-
