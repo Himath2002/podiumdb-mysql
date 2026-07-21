@@ -1,0 +1,37 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "podiumdb-client"
+version = "1.0.0"
+description = "Typed Python client for the PodiumDB MySQL sports analytics schema"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+authors = [
+    { name = "Himath Ahangama" }
+]
+dependencies = [
+    "mysql-connector-python==9.7.0"
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Console",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Database",
+]
+
+[project.urls]
+Repository = "https://github.com/Himath2002/podiumdb-mysql"
+Issues = "https://github.com/Himath2002/podiumdb-mysql/issues"
+
+[project.scripts]
+podiumdb = "podiumdb.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]

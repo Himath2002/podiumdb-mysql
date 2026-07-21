@@ -1,0 +1,92 @@
+name: Verification
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  python:
+    name: Python ${{ matrix.python-version }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.13"]
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+
+      - name: Install package
+        run: python -m pip install .
+
+      - name: Run unit and contract tests
+        run: python -m unittest discover -s tests -v
+
+      - name: Compile Python sources
+        run: python -m compileall -q src tests
+
+  mysql:
+    name: MySQL integration
+    runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:8.4
+        env:
+          MYSQL_DATABASE: podiumdb
+          MYSQL_ROOT_PASSWORD: root-local
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -uroot -proot-local --silent"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=20
+
+    env:
+      MYSQL_PWD: root-local
+      PODIUMDB_HOST: 127.0.0.1
+      PODIUMDB_PORT: "3306"
+      PODIUMDB_USER: root
+      PODIUMDB_PASSWORD: root-local
+      PODIUMDB_DATABASE: podiumdb
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+          cache: pip
+
+      - name: Install MySQL client
+        run: sudo apt-get update && sudo apt-get install --yes default-mysql-client
+
+      - name: Build schema and seed data
+        run: mysql --protocol=TCP --host=127.0.0.1 --user=root < sql/bootstrap.sql
+
+      - name: Verify database invariants
+        run: mysql --protocol=TCP --host=127.0.0.1 --user=root podiumdb < sql/tests/invariants.sql
+
+      - name: Exercise analytics catalog
+        run: mysql --protocol=TCP --host=127.0.0.1 --user=root podiumdb < sql/analytics/queries.sql > /dev/null
+
+      - name: Exercise Python client
+        run: |
+          python -m pip install .
+          podiumdb medal-table
+          podiumdb athletes --country AUS
+          podiumdb events
