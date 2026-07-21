@@ -1,0 +1,23 @@
+services:
+  mysql:
+    image: mysql:8.4
+    environment:
+      MYSQL_DATABASE: podiumdb
+      MYSQL_USER: podium
+      MYSQL_PASSWORD: ${PODIUMDB_PASSWORD:-podium-local}
+      MYSQL_ROOT_PASSWORD: ${PODIUMDB_ROOT_PASSWORD:-root-local}
+    ports:
+      - "${PODIUMDB_PORT:-3306}:3306"
+    volumes:
+      - ./sql/schema/001_core_schema.sql:/docker-entrypoint-initdb.d/010_schema.sql:ro
+      - ./sql/routines/001_routines_and_triggers.sql:/docker-entrypoint-initdb.d/020_routines.sql:ro
+      - ./sql/seed/001_synthetic_competition.sql:/docker-entrypoint-initdb.d/030_seed.sql:ro
+      - ./sql/analytics/001_views.sql:/docker-entrypoint-initdb.d/040_views.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u root -p$$MYSQL_ROOT_PASSWORD --silent"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 20s
+    restart: unless-stopped
+
