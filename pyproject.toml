@@ -13,7 +13,7 @@ authors = [
     { name = "Himath Ahangama" }
 ]
 dependencies = [
-    "mysql-connector-python==9.7.0"
+    "mysql-connector-python==26.7.0"
 ]
 classifiers = [
     "Development Status :: 5 - Production/Stable",
