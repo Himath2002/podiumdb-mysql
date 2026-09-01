@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/assets/podiumdb-hero.svg" alt="PodiumDB — integrity-first MySQL sports analytics" width="100%">
+  <img src="docs/assets/podiumdb-hero.svg" alt="PodiumDB - integrity-first MySQL sports analytics" width="100%">
 </p>
 
 <p align="center">
